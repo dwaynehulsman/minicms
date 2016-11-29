@@ -71,16 +71,22 @@ let config = {
 	]
 }
 
-function render(blocks) {
+function render(blocks, path) {
 	let html = []
 
 	for (let block of blocks) {
+		let index = blocks.indexOf(block)
+
 		if (block.module == "grid") {
 			// TODO: OOP so the template calls .render()
-			block.renders = render(block.blocks)
+			block.renders = render(block.blocks, path.concat(index))
 		}
 
+		// TODO: this is really bad: writing to shared memory
+		block.path = path
+
 		let htmlCode = pug.render(fs.readFileSync("modules/" + block.module + ".pug", "utf8"), block)
+		htmlCode = "<div data-cms-id=\"" + encodeURIComponent(path.concat(index).join(".")) + "\">" + htmlCode + "</div>"
 
 		if (block.container) {
 			htmlCode = "<div class=\"container\">" + htmlCode + "</div>"
@@ -95,7 +101,7 @@ function render(blocks) {
 app.get("/", (req, res) => {
 	res.header("Content-Type", "text/html; charset=utf-8")
 	res.send(pug.render(fs.readFileSync("base.pug", "utf-8"), {
-		blocks: render(config.blocks)
+		blocks: render(config.blocks, [])
 	}))
 })
 
