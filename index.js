@@ -1,6 +1,17 @@
 const express = require("express")
 const fs = require("fs")
+const knex = require("knex")
 const pug = require("pug")
+
+let db = knex({
+	client: "mysql",
+	connection: {
+		host: "127.0.0.1",
+		user: "minicms",
+		password: "minicms",
+		database: "minicms"
+	}
+})
 
 let app = express()
 
@@ -92,11 +103,26 @@ function render(blocks) {
 	return html
 }
 
-app.get("/", (req, res) => {
+/*app.get("/", (req, res) => {
 	res.header("Content-Type", "text/html; charset=utf-8")
 	res.send(pug.render(fs.readFileSync("base.pug", "utf-8"), {
 		blocks: render(config.blocks)
 	}))
-})
+})*/
 
-app.listen(1337)
+function handlePage(pageId, req, res) {
+	//db("page").select("module_instance.*").where("page.pageId", pageId).leftJoin("module_instance", function() {
+	db("module_instance").select("module_instance.*").where("page.pageId", pageId).leftJoin("page", function() {
+		this.on("module_instance.pageId", "=", "page.pageId").orOn("module_instance.pageId", "=", "page.parentPageId")
+	}).then((modules) => {
+		res.send(modules)
+	})
+}
+
+db("page_route").then((pageRoutes) => {
+	for (let pageRoute of pageRoutes) {
+		app.get(pageRoute.routePattern, (req, res) => handlePage(pageRoute.pageId, req, res))
+	}
+}).then(() => {
+	app.listen(1337)
+})
