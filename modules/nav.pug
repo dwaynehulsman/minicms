@@ -1,0 +1,17 @@
+.navbar.navbar-default
+	.container
+		.navbar-header
+			a.navbar-brand(href="/")= siteName
+			button.navbar-toggle(type='button', data-toggle='collapse', data-target='#navbar-main')
+				span.icon-bar
+				span.icon-bar
+				span.icon-bar
+		#navbar-main.navbar-collapse.collapse
+			ul.nav.navbar-nav
+				each item in nav
+					li
+						a= item
+			ul.nav.navbar-nav.navbar-right
+				each item in right
+					li
+						a= item

@@ -1,0 +1,4 @@
+.container
+	.row
+		each html, i in renders
+			div(class="col-xs-" + Math.round(12 * blocks[i].size))!= html
