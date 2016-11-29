@@ -112,7 +112,7 @@ function render(blocks) {
 
 function handlePage(pageId, req, res) {
 	//db("page").select("module_instance.*").where("page.pageId", pageId).leftJoin("module_instance", function() {
-	db("module_instance").select("module_instance.*").where("page.pageId", pageId).leftJoin("page", function() {
+	db("page").select("module_instance.*").where("page.pageId", pageId).leftJoin("module_instance", function() {
 		this.on("module_instance.pageId", "=", "page.pageId").orOn("module_instance.pageId", "=", "page.parentPageId")
 	}).then((modules) => {
 		res.send(modules)
