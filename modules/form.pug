@@ -1,4 +1,4 @@
-form
+mixin fields(form)
 	each input in form
 		if input.type == "message"
 			.alert(class="alert-" + input.severity)
@@ -17,4 +17,10 @@ form
 					label
 						input(type="checkbox" name=input.name value="1")
 						= input.label
-	button.btn.btn-default(type="submit")= submitText
+
+if !bare
+	form
+		+fields(form)
+		button.btn.btn-default(type="submit")= submitText
+else
+	+fields(form)

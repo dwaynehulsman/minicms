@@ -7,33 +7,41 @@ html
 		each html in blocks
 			!= html
 		#config.modal.fade(tabindex="-1")
-			.modal-dialog
-				.modal-content
-					.modal-header
-						button.close(type="button" data-dismiss="modal")
-							span ×
-						h4.modal-title Module configuration
-					.modal-body
-						| ...
-					.modal-footer
-						button.btn.btn-default(type="button" data-dismiss="modal") Close
-						button.btn.btn-primary(type="button") Save changes
-		style.
-			[data-cms-id].highlight {
-				border: 1px dashed red;
-			}
+			form(method="post")
+				.modal-dialog
+					.modal-content
+						.modal-header
+							button.close(type="button" data-dismiss="modal")
+								span ×
+							h4.modal-title Module configuration
+						.modal-body
+							| ...
+						.modal-footer
+							button.btn.btn-default(data-dismiss="modal") Close
+							button.btn.btn-primary(type="submit") Save changes
+		if configMode
+			style.
+				[data-cms-id].highlight {
+					border: 1px dashed red;
+				}
 		script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.4/jquery.min.js")
 		script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
-		script.
-			$("[data-cms-id]").mouseenter(function(e) {
-				$(".highlight").removeClass("highlight")
-				$("[data-cms-id]:hover").last().addClass("highlight")
-			}).mouseleave(function(e) {
-				$(".highlight").removeClass("highlight")
-				$("[data-cms-id]:hover").first().addClass("highlight")
-			}).click(function(e) {
-				e.preventDefault()
-				e.stopImmediatePropagation()
-				$(".modal-body").text($(this).attr("data-cms-id"))
-				$("#config").modal()
-			})
+		if configMode
+			script.
+				$("[data-cms-id]").mouseenter(function(e) {
+					$(".highlight").removeClass("highlight")
+					$("[data-cms-id]:hover").last().addClass("highlight")
+				}).mouseleave(function(e) {
+					$(".highlight").removeClass("highlight")
+					$("[data-cms-id]:hover").first().addClass("highlight")
+				}).click(function(e) {
+					e.preventDefault()
+					e.stopImmediatePropagation()
+
+					$("#config .modal-body").text("Loading...")
+					$("#config").modal()
+
+					let uri = location.pathname + "?config=" + $(this).attr("data-cms-id")
+					$("#config form").prop("action", uri)
+					$(".modal-body").load(uri)
+				})
