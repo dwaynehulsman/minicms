@@ -47,7 +47,7 @@ function render(blocks, path, configMode) {
 
 		if (block.module == "grid") {
 			// TODO: OOP so the template calls .render()
-			block.renders = render(block.blocks, path.concat(index))
+			block.renders = render(block.blocks, path.concat(index), configMode)
 		}
 
 		// TODO: this is really bad: writing to shared memory
