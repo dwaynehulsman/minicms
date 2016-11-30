@@ -18,6 +18,24 @@ var moduleConfigTypes = {
 				label: "Content"
 			}
 		]
+	},
+	html: {
+		fields: [
+			{
+				type: "textarea",
+				name: "content",
+				label: "Raw HTML content"
+			}
+		]
+	},
+	footer: {
+		fields: [
+			{
+				type: "text",
+				name: "copyright",
+				label: "Copyright notice text"
+			}
+		]
 	}
 }
 

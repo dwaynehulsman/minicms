@@ -19,7 +19,7 @@
 		{
 			"module": "html",
 			"container": true,
-			"content": "<hr>"
+			"content": "<a href=\"?config\" class=\"btn btn-primary\">Edit this page</a><hr>"
 		},
 		{
 			"module": "grid",
