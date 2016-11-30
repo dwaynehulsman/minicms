@@ -96,6 +96,7 @@ app.all("/", (req, res) => {
 		if (req.method == "GET") {
 			let output = pug.render(fs.readFileSync("modules/form.pug", "utf-8"), {
 				form: configType.fields,
+				values: obj,
 				submitText: "Save configuration",
 				bare: true
 			}, false)

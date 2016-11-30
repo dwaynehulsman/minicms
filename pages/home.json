@@ -14,7 +14,7 @@
 		{
 			"module": "text",
 			"container": true,
-			"content": "Hello and welcome to the experiment!!!"
+			"content": "Hello and welcome to the experiment!"
 		},
 		{
 			"module": "html",

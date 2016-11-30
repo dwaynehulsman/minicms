@@ -1,4 +1,4 @@
-mixin fields(form)
+mixin fields(form, values)
 	each input in form
 		if input.type == "message"
 			.alert(class="alert-" + input.severity)
@@ -6,21 +6,21 @@ mixin fields(form)
 		if input.type == "text"
 			.form-group
 				label= input.label
-				input.form-control(type="text" name=input.name)
+				input.form-control(type="text" name=input.name value=values[input.name])
 		if input.type == "textarea"
 			.form-group
 				label= input.label
-				textarea.form-control(name=input.name)
+				textarea.form-control(name=input.name)= values[input.name]
 		if input.type == "checkbox"
 			.form-group
 				.checkbox
 					label
-						input(type="checkbox" name=input.name value="1")
+						input(type="checkbox" name=input.name value="1" checked=(values[input.name] == 1))
 						= input.label
 
 if !bare
 	form
-		+fields(form)
+		+fields(form, values || {})
 		button.btn.btn-default(type="submit")= submitText
 else
-	+fields(form)
+	+fields(form, values || {})
